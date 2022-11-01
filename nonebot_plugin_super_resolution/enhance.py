@@ -37,16 +37,16 @@ def get_model(text: str) -> Model:
     model = Model()
 
     if match := re.search(
-        r"(?P<scale>.{1})[倍x](?:放大)?\s*(?P<strength>.*)", text, re.IGNORECASE
+        r"(?P<scale>.{1})[倍x]", text, re.IGNORECASE
     ):
         try:
             model.scale = zh_num.index(match["scale"])
         except ValueError:
             model.scale = int(match["scale"])
 
-        for k, v in strength_map.items():
-            if any(i in match["strength"] for i in v):
-                model.strength = k
+    for k, v in strength_map.items():
+        if any(i in text for i in v):
+            model.strength = k
 
     return model
 
